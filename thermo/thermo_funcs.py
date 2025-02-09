@@ -15,6 +15,8 @@ def d_eff(time, MR, thickness):
     '''
     ln_MR = np.log(MR) # get natural log of MR
 
+    time = time * 60 # convert time from mins to secs.
+
     time = time.reshape(-1, 1)
     
     thickness = thickness*0.001 # convert thickness from mm to m
@@ -82,7 +84,7 @@ def get_enthalpy(Ea, temp):
     '''
     R = 8.3145 # universal gas constant
 
-    temp = temp + 273 # convert temperature to kelvin.
+    temp = temp + 273.15 # convert temperature to kelvin.
     delta_H = Ea - (R*temp)
 
     return delta_H
@@ -94,7 +96,7 @@ def get_entropy(lnDo, temp):
     '''
 
     R = 8.3145 # universal gas constant.
-    kb = 1.38 * 10**-34 # Boltzmann constant 
+    kb = 1.38 * 10**-23 # Boltzmann constant 
     hp = 6.626 * 10**-34 # Planck constant 
 
     temp = temp + 273 # convert temperature to kelvin.
