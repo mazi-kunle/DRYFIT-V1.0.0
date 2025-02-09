@@ -15,7 +15,7 @@ from thin_layer_models.model_fitter import model_fitter
 
 def thermo_calc():
 	'''
-	function to handla all thermodynamics calculations
+	function to handles all thermodynamics calculations
 	'''
 	files = file_extractor()  # extract files in /Data
 	data = file_reader(files) # extract files in /Data
@@ -40,7 +40,7 @@ def thermo_calc():
 				MR = data[key][i]['MR'] # get MR
 			except Exception as e:
 				print('Error!!! Pls Recheck data in files')
-				return 1
+				continue
 			else:
 				Deff = d_eff(time, MR, i) # calculate moisture diffusivity.
 			
@@ -49,7 +49,7 @@ def thermo_calc():
 		output.append(_) # format d_eff to be written
 
 	# write moisture diffusivity report to file
-	# write_csv(output, temp, thickness)
+	write_csv(output, temp, thickness)
 
 
 	Ea_data = []
@@ -60,19 +60,19 @@ def thermo_calc():
 		lndo_data.append(lnDo)
 		    
 	# generate activation energy result
-	# gen_act_energy_report(Ea_data, thickness)
+	gen_act_energy_report(Ea_data, thickness)
 
 	# generate enthalpy result
 	enthalpy_data = [get_enthalpy(Ea_data[i]*1000, temp) for i in range(len(Ea_data))]
-	# custom_csv_writer(temp, thickness, enthalpy_data, 'Enthalpy data (j/mol)', 'enthalpy_data') 
+	custom_csv_writer(temp, thickness, enthalpy_data, 'Enthalpy data (j/mol) for carrot samples', 'enthalpy_data') 
 
 	# generate entropy result
 	entropy_data = [get_entropy(lndo_data[i], temp) for i in range(len(Ea_data))]
-	# custom_csv_writer(temp, thickness, entropy_data, 'Entropy data (j/mol.K)', 'entropy_data')
+	custom_csv_writer(temp, thickness, entropy_data, 'Entropy data (j/mol.K) for carrot samples', 'entropy_data')
 
 	# generate gibbs free energy result
 	gibbs_data = [get_gibbs(get_enthalpy(Ea_data[i]*1000, temp), get_entropy(lndo_data[i], temp), temp) for i in range(len(Ea_data))]
-	# custom_csv_writer(temp, thickness, gibbs_data, 'Gibbs free energy data (j/mol)', 'gibbs_energy_data')
+	custom_csv_writer(temp, thickness, gibbs_data, 'Gibbs free energy data (j/mol) for carrot samples', 'gibbs_energy_data')
 
 
 	return data
@@ -113,10 +113,10 @@ for temp in keys:
 	sub_headers = ["(R²)", "SSE", "RMSE"]
 	
 	create_dynamic_table(f'model-result-{temp}', main_headers, sub_headers, r_data, temp)
+	generate_report(new_data)
 	# break
-
 
 # rprint(new_data)
 
-
+# 
 

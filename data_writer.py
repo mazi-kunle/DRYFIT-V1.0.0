@@ -4,7 +4,37 @@ import pandas as pd
 import datetime
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, Border, Side
+import json
 
+
+def generate_report(results):
+    '''A function that appends results to file
+    '''
+    
+
+    current_time = datetime.datetime.now() # get datestamp
+    timestamp = current_time.strftime('%Y-%m-%d')
+
+    # append datestamp to file
+    temp = list(results.keys())[0]
+    new_temp = f'{temp} degrees Celcius'
+
+    thickness = list(results[temp].keys())
+    new_thickness = [f'{i} mm' for i in thickness]
+
+    newdata = {
+        new_temp: {}
+    }
+
+    for i in range(len(thickness)):
+        newdata[new_temp][new_thickness[i]] = results[temp][thickness[i]]
+
+    filename = f'model_constants @{temp} _{timestamp}.txt'
+
+    with open(filename, 'w') as f:
+        json.dump(newdata, f, indent=4)
+        f.write('\n')
+    print(f'Data has been written to {filename}')
 
 
 def write_csv(data, temp, thickness):
@@ -18,7 +48,8 @@ def write_csv(data, temp, thickness):
     # append datestamp to file
     file_name = f'moisture_diffusivity_{timestamp}.csv'
     
-    _repeat = 'Moisture diffusivity for samples at different thickness and temperatures'
+    sample = 'carrot' # sample tested
+    _repeat = f'Moisture diffusivity of {sample} samples at different thickness and temperatures (m^2/s)'
     
     # format temperatures
     temp_data = []
@@ -59,7 +90,7 @@ def gen_act_energy_report(Ea, thickness):
     
     index = [f'{i}mm' for i in thickness]
     headers = ['Parameters'] + index
-    data = [['Activation energy Ea (kJ/mol)'] + Ea]
+    data = [['Activation energy Ea (kJ/mol) for carrot samples'] + Ea]
 
     # generate csv file
     df = pd.DataFrame(data, columns=headers)
@@ -152,7 +183,7 @@ def create_dynamic_table(filename, main_headers, sub_headers, data, temp):
     ws['A1'] = title
 
     # Align title
-    ws['A1'].alignment = Alignment(horizontal='center', vertical='center')
+    # ws['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ws['A1'].font = Font(bold=True)
 
     # Dynamically set the main headers and merge cells
@@ -196,5 +227,3 @@ def create_dynamic_table(filename, main_headers, sub_headers, data, temp):
     wb.save(filename)
 
     return 0
-
-
