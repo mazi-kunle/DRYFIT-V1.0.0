@@ -1,6 +1,7 @@
 '''This file handles all data writing'''
 
 import pandas as pd
+import xlsxwriter
 import datetime
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, Border, Side
@@ -48,7 +49,7 @@ def write_csv(data, temp, thickness):
     # append datestamp to file
     file_name = f'moisture_diffusivity_{timestamp}.csv'
     
-    sample = 'carrot' # sample tested
+    sample = 'Oven' # sample tested
     _repeat = f'Moisture diffusivity of {sample} samples at different thickness and temperatures (m^2/s)'
     
     # format temperatures
@@ -71,11 +72,11 @@ def write_csv(data, temp, thickness):
     # create dataframe
     df = pd.DataFrame(data, columns=headers, index=index)
     
-    df.to_csv(file_name) # convert dataframe to csv
+    # df.to_excel(file_name) # convert dataframe to csv
 
     print(f'Data has been written successfully to {file_name}')
 
-    return 0
+    return df
 
 
 def gen_act_energy_report(Ea, thickness):
@@ -90,15 +91,15 @@ def gen_act_energy_report(Ea, thickness):
     
     index = [f'{i}mm' for i in thickness]
     headers = ['Parameters'] + index
-    data = [['Activation energy Ea (kJ/mol) for carrot samples'] + Ea]
+    data = [['Activation energy Ea (kJ/mol) for Oven samples'] + Ea]
 
     # generate csv file
     df = pd.DataFrame(data, columns=headers)
-    df.to_csv(file_name, index=False)
+    # df.to_excel(file_name, index=False)
 
     print("Activation energy report generated successfully") 
     
-    return 0
+    return df
 
 
 def custom_csv_writer(temp, thickness, data, header, filename):
@@ -128,11 +129,11 @@ def custom_csv_writer(temp, thickness, data, header, filename):
 
     df = pd.DataFrame(data, columns=headers, index=index) # create dataframe
     
-    df.to_csv(file_name) # convert dataframe to a csv file
+    # df.to_csv(file_name) # convert dataframe to a csv file
 
     print(f'Data has been written successfully to {file_name}')
 
-    return 0
+    return df
 
 
 def model_report_writer(data, temp):
@@ -225,5 +226,60 @@ def create_dynamic_table(filename, main_headers, sub_headers, data, temp):
 
     # Save the workbook
     wb.save(filename)
+
+    return 0
+
+
+# def df_writer(df_list):
+#     '''
+#     function takes a list of dataframes and saves
+#     them to different sheets in one excel file.
+#     '''
+#     # create timestamp
+#     current_time = datetime.datetime.now()
+#     timestamp = current_time.strftime('%Y-%m-%d')
+#     file_name = f'Thermodynamics_Results_{timestamp}.xlsx'
+    
+#     # Create an Excel writer object
+#     with pd.ExcelWriter(file_name, engine="xlsxwriter") as writer:
+#         df_list[0].to_excel(writer, sheet_name="Moisture Diffusivity",)  # First sheet
+#         df_list[1].to_excel(writer, sheet_name="Activation Energy", index=False)  # Second sheet
+#         df_list[2].to_excel(writer, sheet_name="Enthalpy" )  # Third sheet
+#         df_list[3].to_excel(writer, sheet_name="Entropy")  # Forth sheet
+#         df_list[4].to_excel(writer, sheet_name="Gibbs Free Energy")  # Fifth sheet
+
+    
+#     print("Excel file with multiple sheets saved successfully!")
+
+
+def df_writer(df_list):
+    '''
+    function takes a list of dataframes and saves
+    them to different sheets in one excel file.
+    '''
+    # create timestamp
+    current_time = datetime.datetime.now()
+    timestamp = current_time.strftime('%Y-%m-%d')
+    file_name = f'Thermodynamics_Results_{timestamp}.csv'
+
+
+    with open(file_name, "w", newline='') as f:
+        f.write("Moisture Diffusivity Data\n")  # Add a header
+        df_list[0].to_csv(f)
+
+        f.write("\nActivation Energy Data\n")
+        df_list[1].to_csv(f, index=False)
+
+        f.write("\nEnthalpy Data\n")
+        df_list[2].to_csv(f)
+
+        f.write("\nEntropy Data\n")
+        df_list[3].to_csv(f)
+
+        f.write("\nGibbs Free Energy Data\n")
+        df_list[4].to_csv(f)
+
+    
+    print("Excel file with multiple sheets saved successfully!")
 
     return 0
