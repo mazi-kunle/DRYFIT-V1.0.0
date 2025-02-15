@@ -11,6 +11,8 @@ from thermo.thermo_funcs import *
 from thin_layer_models.model_fitter import model_fitter
 
 
+folder_path = make_dir()
+
 
 
 def thermo_calc():
@@ -74,7 +76,8 @@ def thermo_calc():
 	gibbs_data = [get_gibbs(get_enthalpy(Ea_data[i]*1000, temp), get_entropy(lndo_data[i], temp), temp) for i in range(len(Ea_data))]
 	df5 = custom_csv_writer(temp, thickness, gibbs_data, 'Gibbs free energy data (j/mol) for oven samples', 'gibbs_energy_data')
 
-	df_writer([df1, df2, df3, df4, df5])
+	
+	df_writer([df1, df2, df3, df4, df5], folder_path)
 
 
 	return data
@@ -114,8 +117,8 @@ for temp in keys:
 	main_headers = [f'{i} mm' for i in thickness_list]
 	sub_headers = ["(R²)", "SSE", "RMSE"]
 	
-	create_dynamic_table(f'model-result-{temp}', main_headers, sub_headers, r_data, temp)
-	generate_report(new_data)
+	create_dynamic_table(f'model-result-{temp}', folder_path, main_headers, sub_headers, r_data, temp)
+	generate_report(new_data, folder_path)
 	# break
 
 # rprint(new_data)

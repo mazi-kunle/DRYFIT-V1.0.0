@@ -8,7 +8,7 @@ from openpyxl.styles import Alignment, Font, Border, Side
 import json
 
 
-def generate_report(results):
+def generate_report(results, folder_path):
     '''A function that appends results to file
     '''
     
@@ -30,7 +30,7 @@ def generate_report(results):
     for i in range(len(thickness)):
         newdata[new_temp][new_thickness[i]] = results[temp][thickness[i]]
 
-    filename = f'model_constants @{temp} _{timestamp}.txt'
+    filename = f'{folder_path}/model_constants-{temp}_{timestamp}.txt'
 
     with open(filename, 'w') as f:
         json.dump(newdata, f, indent=4)
@@ -166,7 +166,7 @@ def model_report_writer(data, temp):
     return result
 
 
-def create_dynamic_table(filename, main_headers, sub_headers, data, temp):
+def create_dynamic_table(filename, folder_path, main_headers, sub_headers, data, temp):
     '''
     creates and formats the models report sheet
     '''
@@ -222,7 +222,7 @@ def create_dynamic_table(filename, main_headers, sub_headers, data, temp):
 
     current_time = datetime.datetime.now()
     timestamp = current_time.strftime('%Y-%m-%d')
-    filename = f'{filename}_{timestamp}.xlsx'
+    filename = f'{folder_path}/{filename}_{timestamp}.xlsx'
 
     # Save the workbook
     wb.save(filename)
@@ -252,7 +252,7 @@ def create_dynamic_table(filename, main_headers, sub_headers, data, temp):
 #     print("Excel file with multiple sheets saved successfully!")
 
 
-def df_writer(df_list):
+def df_writer(df_list, folder_path):
     '''
     function takes a list of dataframes and saves
     them to different sheets in one excel file.
@@ -260,7 +260,7 @@ def df_writer(df_list):
     # create timestamp
     current_time = datetime.datetime.now()
     timestamp = current_time.strftime('%Y-%m-%d')
-    file_name = f'Thermodynamics_Results_{timestamp}.csv'
+    file_name = f'{folder_path}/Thermodynamics_Results_{timestamp}.csv'
 
 
     with open(file_name, "w", newline='') as f:
@@ -283,3 +283,25 @@ def df_writer(df_list):
     print("Excel file with multiple sheets saved successfully!")
 
     return 0
+
+
+
+def make_dir():
+    '''
+    This function creates a result folder to 
+    contain all results generated
+    '''
+    from pathlib import Path
+    import time
+
+    # use current time as a unique identifier for every folder created
+    current_time = datetime.datetime.now()
+    folder_name = f'RESULTS_{time.time()}'
+
+    desktop_path = Path.home() / "Desktop"  # Get desktop path
+    folder_path = desktop_path / folder_name  # Full path to new folder
+    
+    folder_path.mkdir(parents=True, exist_ok=True) # create folder
+    print(f"Folder created at: {folder_path}")
+
+    return folder_path
