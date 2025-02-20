@@ -49,7 +49,7 @@ def write_csv(data, temp, thickness):
     # append datestamp to file
     file_name = f'moisture_diffusivity_{timestamp}.csv'
     
-    sample = 'Oven' # sample tested
+    sample = 'Papaya (RW)' # sample tested
     _repeat = f'Moisture diffusivity of {sample} samples at different thickness and temperatures (m^2/s)'
     
     # format temperatures
@@ -91,7 +91,7 @@ def gen_act_energy_report(Ea, thickness):
     
     index = [f'{i}mm' for i in thickness]
     headers = ['Parameters'] + index
-    data = [['Activation energy Ea (kJ/mol) for Oven samples'] + Ea]
+    data = [['Activation energy Ea (kJ/mol) for Papaya RW samples'] + Ea]
 
     # generate csv file
     df = pd.DataFrame(data, columns=headers)

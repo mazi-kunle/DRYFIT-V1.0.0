@@ -66,15 +66,15 @@ def thermo_calc():
 
 	# generate enthalpy result
 	enthalpy_data = [get_enthalpy(Ea_data[i]*1000, temp) for i in range(len(Ea_data))]
-	df3 = custom_csv_writer(temp, thickness, enthalpy_data, 'Enthalpy data (j/mol) for oven samples', 'enthalpy_data') 
+	df3 = custom_csv_writer(temp, thickness, enthalpy_data, 'Enthalpy data (j/mol) for Papaya RW samples', 'enthalpy_data') 
 
 	# generate entropy result
 	entropy_data = [get_entropy(lndo_data[i], temp) for i in range(len(Ea_data))]
-	df4 = custom_csv_writer(temp, thickness, entropy_data, 'Entropy data (j/mol.K) for oven samples', 'entropy_data')
+	df4 = custom_csv_writer(temp, thickness, entropy_data, 'Entropy data (j/mol.K) for Papaya RW samples', 'entropy_data')
 
 	# generate gibbs free energy result
 	gibbs_data = [get_gibbs(get_enthalpy(Ea_data[i]*1000, temp), get_entropy(lndo_data[i], temp), temp) for i in range(len(Ea_data))]
-	df5 = custom_csv_writer(temp, thickness, gibbs_data, 'Gibbs free energy data (j/mol) for oven samples', 'gibbs_energy_data')
+	df5 = custom_csv_writer(temp, thickness, gibbs_data, 'Gibbs free energy data (j/mol) for Papaya RW samples', 'gibbs_energy_data')
 
 	
 	df_writer([df1, df2, df3, df4, df5], folder_path)
