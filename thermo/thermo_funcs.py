@@ -21,6 +21,8 @@ def d_eff(time, MR, thickness):
     
     thickness = thickness*0.001 # convert thickness from mm to m
 
+    half_thickness = thickness/2   # get half of the thickness
+
     # perform linear regression
     model = LinearRegression()
     model.fit(time, ln_MR)
@@ -39,7 +41,7 @@ def d_eff(time, MR, thickness):
     # plt.grid(1)
     # plt.show()
 
-    Deff = -(slope * 4 * (thickness**2))/(np.pi**2)
+    Deff = -(slope * 4 * (half_thickness**2))/(np.pi**2)
     return Deff
 
 
@@ -49,7 +51,7 @@ def get_activation_energy(Deff, temp):
     '''
     R = 8.3145 # universal gas constant
 
-    inv_temp = 1/(temp + 273) # take the inverse of temperature in kelvin
+    inv_temp = 1/(temp + 273.15) # take the inverse of temperature in kelvin
     
     # get natural log of effective diffusivity
     ln_Deff = np.log(np.array(Deff))
@@ -60,7 +62,7 @@ def get_activation_energy(Deff, temp):
     model = LinearRegression()
     model.fit(inv_temp, ln_Deff)
 
-    fitted_Deff = model.predict(inv_temp)
+    # fitted_Deff = model.predict(inv_temp)
 
     
     # plt.scatter(inv_temp, ln_Deff, color='blue', label='Actual Data')
@@ -99,7 +101,7 @@ def get_entropy(lnDo, temp):
     kb = 1.38 * 10**-23 # Boltzmann constant 
     hp = 6.626 * 10**-34 # Planck constant 
 
-    temp = temp + 273 # convert temperature to kelvin.
+    temp = temp + 273.15 # convert temperature to kelvin.
 
     delta_S = R*(lnDo - np.log(kb/hp) - np.log(temp))
 
@@ -112,7 +114,7 @@ def get_gibbs(delta_H, delta_S, temp):
     ∆G = ∆H - ∆(TS)
     '''
 
-    temp = temp + 273 # convert temperature to kelvin.
+    temp = temp + 273.15 # convert temperature to kelvin.
     
     gibbs_free_energy = delta_H - (temp*delta_S)
 

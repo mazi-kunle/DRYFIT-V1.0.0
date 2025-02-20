@@ -49,7 +49,7 @@ def model_fitter(time, MR):
         
         try:
             # fit model -initial trial using trf algorithm
-            popt, pconv = curve_fit(eval(model), time, MR, method='trf', maxfev=50000)
+            popt, pconv = curve_fit(eval(model), time, MR, method='trf', maxfev=200000)
             
             
             # get y with fitted model
@@ -59,7 +59,7 @@ def model_fitter(time, MR):
             if (r2_score(MR, MR_model)) < 0:
 
                 # fit model using lm algorithm
-                popt, pconv = curve_fit(eval(model), time, MR, method='lm', maxfev=50000)
+                popt, pconv = curve_fit(eval(model), time, MR, method='lm', maxfev=200000)
                 # print(f'{model} fitted with lm')
                 
                  # get y with fitted model
@@ -93,11 +93,13 @@ def model_fitter(time, MR):
             print(f'Error in model {i}')
 
             params = {
-                'R_Square': '',
-                'SSE': '',
-                'RMSE': '',
-                'Constants': {}
+                'R_Square': 'NOT FOUND',
+                'SSE': 'NOT FOUND',
+                'RMSE': 'NOT FOUND',
+                'Constants': 'OPTIMAL PARAMETERS NOT FOUND'
             }
             data[i] = params
 
     return data
+
+
