@@ -1,0 +1,18 @@
+Modified Henderson & Pabis: a*exp(-k*x)+b*exp(-g*x)+c*exp(-h*x)
+Henderson & Pabis: a*exp(-k*(x^n))
+Weibull: (a-b)*(exp(-k*(x^n)))
+Page: exp(-k*(x^n))
+Modified Page: exp(-(k*(x^n)))
+Haghi & Ghanadzadeh: a*exp(-b*(x^c))+(d*(x^2))+(e*x)+f
+Verma et al: (a*exp(-k*t))+((1-a)*exp(-g*x))
+Midilli et al: a*exp(-k*x)+(b*x)
+Peleg: 1-(x/(a+(b*x)))
+Newton: exp(-k*x)
+Logarithmic: a*exp(-k*t)+c
+Silva et al: exp(-a*x - b*sqrt(x))
+Wang and Singh: 1 + a*t + b*t^2
+Two-term: a*exp(-k*t) + b*exp(-g*t)
+Demir et al: a*exp(-k*t)^n + b
+Hill et al: a*exp(-k*t^n) + b*exp(-g*t^n)
+
+
