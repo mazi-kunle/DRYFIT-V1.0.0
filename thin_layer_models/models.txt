@@ -8,5 +8,11 @@ Verma et al: (a*exp(-k*t))+((1-a)*exp(-g*x))
 Midilli et al: a*exp(-k*x)+(b*x)
 Peleg: 1-(x/(a+(b*x)))
 Newton: exp(-k*x)
-logarithmic: a*exp(-k*t)+c
-silva et al: exp(-a*x - b*sqrt(x))
+Logarithmic: a*exp(-k*t)+c
+Silva et al: exp(-a*x - b*sqrt(x))
+Wang and Singh: 1 + a*t + b*t^2
+Two-term: a*exp(-k*t) + b*exp(-g*t)
+Demir et al: a*exp(-k*t)^n + b
+Hill et al: a*exp(-k*t^n) + b*exp(-g*t^n)
+
+

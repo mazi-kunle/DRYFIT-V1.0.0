@@ -42,3 +42,15 @@ def logarithmic(x, a, k, c):
 def silva_et_al(x, a, b):
     return np.exp((-a*x) - (b*np.sqrt(x)))
 
+def wang_and_singh(x, a, b):
+    return 1 + a*x + b*(x**2)
+
+def two_term(x, a, k, b, g):
+    return a*np.exp(-k*x) + b*np.exp(-g*x)
+
+def demir_et_al(x, a, k, n, b):
+    return a*np.exp(-k*x)**n + b
+
+def hill_et_al(x, a, k, n, b, g):
+    return a*np.exp(-k*(x**n)) + b*np.exp(-g*(x**n))
+
