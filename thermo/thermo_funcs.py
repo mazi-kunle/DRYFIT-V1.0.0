@@ -55,19 +55,19 @@ def get_activation_energy(Deff, temp):
     
     # get natural log of effective diffusivity
     ln_Deff = np.log(np.array(Deff))
-      
+    
     inv_temp = inv_temp.reshape(-1, 1)
     
     # perform linear regression
     model = LinearRegression()
     model.fit(inv_temp, ln_Deff)
 
-    # fitted_Deff = model.predict(inv_temp)
+    fitted_Deff = model.predict(inv_temp)
 
     
     # plt.scatter(inv_temp, ln_Deff, color='blue', label='Actual Data')
     # plt.plot(inv_temp, fitted_Deff, color='r', label='Regression Line')
-    # plt.title('Graph of ln(Deff) vs 1/T')
+    # plt.title('Graph of ln(Deff) vs 1/T For Papaya')
     # plt.xlabel('1/Temperature(1/K)')
     # plt.ylabel('ln(Deff)')
     # plt.legend()
@@ -76,6 +76,7 @@ def get_activation_energy(Deff, temp):
 
     slope = model.coef_[0]
     intercept = model.intercept_
+    # print(slope, intercept)
     activation_energy = -R * slope
     return activation_energy, intercept
 
