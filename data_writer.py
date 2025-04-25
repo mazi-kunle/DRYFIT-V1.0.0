@@ -5,15 +5,17 @@ import datetime
 import json
 import matplotlib.pyplot as plt
 import numpy as np
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, Border, Side
+from openpyxl.utils import get_column_letter
+import os
 import pandas as pd
 import random
 from rich import print as rprint
 import xlsxwriter
 
 
-def generate_report(data, folder_path):
+def generate_report(data, file_path):
     '''A function that appends results to file
     '''
     
@@ -64,8 +66,20 @@ def generate_report(data, folder_path):
         sn += 1
 
     # Create workbook and sheet
-    wb = Workbook()
-    ws = wb.active
+    # wb = Workbook()
+    # ws = wb.active
+     # check if file exists
+    if os.path.exists(file_path):
+        wb = load_workbook(file_path)
+    else:
+        wb = Workbook()
+
+        # Remove default sheet if it's empty
+        if 'Sheet' in workbook.sheetnames:
+            wb.remove(workbook['Sheet'])
+
+    # Add new sheet
+    ws = wb.create_sheet(title='Model Constants')
 
     # Define styles
     center = Alignment(horizontal="center", vertical="center")
@@ -135,15 +149,16 @@ def generate_report(data, folder_path):
                 cell.font = bold_font
 
 
-    filename = f'{folder_path}/model_constants_{timestamp}.xlsx'
+    # filename = f'{folder_path}/model_constants_{timestamp}.xlsx'
 
     try:
         # Save file
-        wb.save(filename)
+        wb.save(file_path)
     except Exception as e:
+        print(e)
         print('Error found when writing model constants')
     else:
-        print(f'Data has been written to {filename}')
+        print(f'Data has been written to {file_path}')
 
     return 0
 
@@ -282,10 +297,33 @@ def create_dynamic_table(filename, folder_path, main_headers, sub_headers, data,
     '''
     # create title
     title = f'Result summary of the statistical curve fitting analysis at {temp} °C'
+    current_time = datetime.datetime.now()
+    timestamp = current_time.strftime('%Y-%m-%d')
+    file_path = f'{folder_path}/{filename}_{timestamp}.xlsx'
+    
+    # check if file exists
+    if os.path.exists(file_path):
+        wb = load_workbook(file_path)
+    else:
+        wb = Workbook()
+
+        # Remove default sheet if it's empty
+        if 'Sheet' in wb.sheetnames:
+            wb.remove(wb['Sheet'])
+
+    # Add new sheet
+    ws = wb.create_sheet(title=f'Model Performance@{temp} °C')
 
     # Create a workbook and select the active worksheet
-    wb = Workbook()
-    ws = wb.active
+    # wb = Workbook()
+
+
+    # # Remove default sheet if it's empty
+    # if 'Sheet' in wb.sheetnames:
+    #     wb.remove(wb['Sheet'])
+
+    # # Add new sheet
+    # ws = wb.create_sheet(title='Model Performance')
 
     # merge 5 columns in the first row
     ws.merge_cells('A1:H1')
@@ -399,14 +437,11 @@ def create_dynamic_table(filename, folder_path, main_headers, sub_headers, data,
     #     max_length = max(len(str(ws[f"{col}{r}"].value)) for r in range(31, row))
     #     ws.column_dimensions[col].width = max(10, max_length + 2)
 
-    current_time = datetime.datetime.now()
-    timestamp = current_time.strftime('%Y-%m-%d')
-    filename = f'{folder_path}/{filename}_{timestamp}.xlsx'
 
     # Save the workbook
-    wb.save(filename)
+    wb.save(file_path)
 
-    return 0
+    return file_path
 
 
 # def df_writer(df_list):
@@ -502,7 +537,118 @@ def groupby_thickness(new_data, best_model_list, thickness_list, temp):
     return 0
 
 
-def plot_drying_curve(best_model_results, folder_path):
+def plots_data_writer(data, file_path, sheet_name, headers):
+    """
+    Writes data to a new sheet in an Excel file.
+    Creates the file if it doesn't exist.
+        
+    Args:
+        data (dict): Data to write (rows of columns)
+        file_path (str): Path to the Excel file
+        sheet_name (str): name for the sheet
+        headers (list): dynammic headers for the sheet
+    """
+
+    # check if file exists
+    if os.path.exists(file_path):
+        workbook = load_workbook(file_path)
+    else:
+        workbook = Workbook()
+
+        # Remove default sheet if it's empty
+        if 'Sheet' in workbook.sheetnames:
+            workbook.remove(workbook['Sheet'])
+
+    # Add new sheet
+    ws = workbook.create_sheet(title=sheet_name)
+    
+    # Styles
+    bold_font = Font(bold=True)
+    thin_border = Border(
+    left=Side(style='thin'),
+    right=Side(style='thin'),
+    top=Side(style='thin'),
+    bottom=Side(style='thin')
+    )
+     
+    center_align = Alignment(horizontal='center', vertical='center')
+
+    # Extract data
+    thickness = list(data.keys())[0]
+    temperatures = list(data[thickness].keys())
+    num_temps = len(temperatures)
+    total_columns = num_temps * 3
+
+    # Row 1: Thickness
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=total_columns)
+    cell = ws.cell(row=1, column=1)
+    cell.value = f"{thickness} mm"
+    cell.font = bold_font
+    cell.alignment = center_align
+    cell.border = thin_border
+
+    # Row 2-3: Temperature + Subheaders
+    for i, temp in enumerate(temperatures):
+        col_base = i * 3 + 1
+
+        # Temperature header
+        ws.merge_cells(start_row=2, start_column=col_base, end_row=2, end_column=col_base+2)
+        temp_cell = ws.cell(row=2, column=col_base)
+        temp_cell.value = f"{temp} Degrees Celcius"
+        temp_cell.font = bold_font
+        temp_cell.alignment = center_align
+        temp_cell.border = thin_border
+
+        for col in range(col_base, col_base + 3):
+            ws.cell(row=2, column=col).border = thin_border
+
+         # Subheaders
+        headers = headers
+        for j, h in enumerate(headers):
+            sub_cell = ws.cell(row=3, column=col_base + j)
+            sub_cell.value = h
+            sub_cell.font = bold_font
+            sub_cell.alignment = center_align
+            sub_cell.border = thin_border
+
+        # Data rows
+        data_rows = list(data[thickness][temp].keys())
+        time = data[thickness][temp][data_rows[0]]
+        data1 = data[thickness][temp][data_rows[1]]
+        data2 = data[thickness][temp][data_rows[2]]
+
+        for r_idx in range(len(time)):
+            r = r_idx + 4
+            ws.cell(row=r, column=col_base).value = time[r_idx]
+            ws.cell(row=r, column=col_base+1).value = data1[r_idx]
+            ws.cell(row=r, column=col_base+2).value = data2[r_idx]
+
+            for j in range(3):
+                d_cell = ws.cell(row=r, column=col_base + j)
+                d_cell.border = thin_border
+                d_cell.alignment = center_align
+
+    # Apply borders to thickness and headers
+    for row in range(1, 4):
+        for col in range(1, total_columns + 1):
+            cell = ws.cell(row=row, column=col)
+            cell.border = thin_border
+            cell.alignment = center_align
+
+    # Auto-resize columns
+    for col in ws.columns:
+        max_length = 0
+        col_letter = get_column_letter(col[0].column)
+        for cell in col:
+            if cell.value:
+                max_length = max(max_length, len(str(cell.value)))
+        ws.column_dimensions[col_letter].width = max_length + 2
+        
+    # save the workbook
+    workbook.save(file_path)
+    return
+
+def plot_drying_curve(best_model_results, folder_path, file_path):
     '''
     This function plots and saves the drying curve
     to folder path using the data in best_model_results
@@ -514,6 +660,9 @@ def plot_drying_curve(best_model_results, folder_path):
 
     
     for thickness in best_model_results.keys():
+        data = {
+            thickness: {}
+        }
 
         plt.figure(figsize=(10, 6))
 
@@ -524,7 +673,21 @@ def plot_drying_curve(best_model_results, folder_path):
             MR1 = best_model_results[thickness][temp]['MR1'] # experimental moisture ratio
             MR2 = best_model_results[thickness][temp]['MR2'] # predicted moisture ratio
  
-        
+            MR_ = []
+            for i in range(0, max(time)+1):
+                if i in time:
+                    MR_.append(MR1[np.where(time == i)[0][0]])
+                else:
+                    MR_.append('')
+
+            data[thickness][temp] = {
+                'time': list(range(0, max(time) + 1)),
+                'MR_ex': MR_,
+                'MR_pre': MR2
+            }
+
+  
+            
             random.shuffle(markers)
             plt.scatter(time, MR1, label=f'Experimental: {temp} Degrees Celcius', 
                 marker=random.choice(markers))
@@ -534,6 +697,11 @@ def plot_drying_curve(best_model_results, folder_path):
                 linestyle=random.choice(linestyle))
 
 
+        plots_data_writer(data, file_path,
+            f'Drying curve ({thickness}mm)',
+            ['Time (mins)', 'MR (Experimental)', 'MR (Predicted)']
+        )
+        
         plt.legend(fontsize=10, title_fontsize=12, loc="upper right")
 
         plt.xlabel("Time (mins)", fontsize=12)
@@ -549,11 +717,14 @@ def plot_drying_curve(best_model_results, folder_path):
         plt.close()
 
 
-def plot_drying_rate_curve(best_model_results, folder_path):
+def plot_drying_rate_curve(best_model_results, folder_path, file_path):
     '''
     '''
 
     for thickness in best_model_results.keys():
+        data = {
+            thickness: {}
+        }
 
         plt.figure(figsize=(10, 6))
         
@@ -568,10 +739,20 @@ def plot_drying_rate_curve(best_model_results, folder_path):
             drying_rate = -np.diff(MR2) / np.diff(time2)
             drying_rate_arr = np.insert(drying_rate, 0, 0) # insert 0 at index 0
 
+            data[thickness][temp] = {
+                'time': time2,
+                'MR_pre': MR2,
+                'Drying Rate': drying_rate_arr
+            
+            }
 
 
             plt.plot(time2, drying_rate_arr, label=f'{temp} Degrees Celcius')
 
+        plots_data_writer(data, file_path,
+            f'Drying rate curve ({thickness}mm)',
+            ['Time (mins)', 'MR (Predicted)', 'Drying Rate']
+        )
 
         plt.legend(fontsize=10, title_fontsize=12, loc="upper right")
 
@@ -593,7 +774,8 @@ def  plot_krischer_curve(best_model_results, folder_path):
     '''
 
     for thickness in best_model_results.keys():
-
+        data = {}
+        
         plt.figure(figsize=(10, 6))
 
         for temp in best_model_results[thickness].keys():
@@ -607,7 +789,7 @@ def  plot_krischer_curve(best_model_results, folder_path):
             drying_rate = -np.diff(MR2) / np.diff(time2)
             drying_rate_arr = np.insert(drying_rate, 0, 0) # insert 0 at index 0
 
-        
+            
             plt.plot(MR2, drying_rate_arr, label=f'{temp} Degrees Celcius')
 
 
@@ -629,7 +811,7 @@ def  plot_krischer_curve(best_model_results, folder_path):
 
 
 
-def plot_handler(best_model_results, folder_path):
+def plot_handler(best_model_results, folder_path, file_path):
     '''
     This function handles the drawing of the 
     required plots: Drying curve,
@@ -637,10 +819,10 @@ def plot_handler(best_model_results, folder_path):
     '''
     
     # plot drying curve
-    plot_drying_curve(best_model_results, folder_path)
+    plot_drying_curve(best_model_results, folder_path, file_path)
 
     # plot drying rate curve
-    plot_drying_rate_curve(best_model_results, folder_path)
+    plot_drying_rate_curve(best_model_results, folder_path, file_path)
     
     # plot krischer curve
     plot_krischer_curve(best_model_results, folder_path)

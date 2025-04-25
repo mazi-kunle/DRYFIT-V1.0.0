@@ -88,7 +88,6 @@ def thermo_calc():
 
 	return data
 
-
 data = thermo_calc()
 
 # get keys
@@ -136,15 +135,16 @@ for temp in keys:
 
 
 	# create models statistical evaluation report
-	create_dynamic_table(f'model-result-{temp}', folder_path, main_headers, sub_headers, r_data, temp)
+	file_path = create_dynamic_table(f'model-results', folder_path, main_headers, sub_headers, r_data, temp)
 	
 	model_constants_dict.update(new_data)
 
 # generate model constants report
-generate_report(model_constants_dict, folder_path)
+generate_report(model_constants_dict, file_path)
 
+# rprint(best_model_result)
 
-plot_handler(best_model_result, folder_path)
+plot_handler(best_model_result, folder_path, file_path)
 
 
 
