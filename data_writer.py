@@ -163,103 +163,259 @@ def generate_report(data, file_path):
     return 0
 
 
-def write_csv(data, temp, thickness):
+def Deff_writer(data, temperatures, thicknesses, folder_path):
     '''
-    This function writes data to
-    a csv file
+    This function writes moisture diffusivity data
+    to an excel sheet
     '''
     current_time = datetime.datetime.now() # get datestamp
     timestamp = current_time.strftime('%Y-%m-%d')
 
     # append datestamp to file
-    file_name = f'moisture_diffusivity_{timestamp}.csv'
+    file_name = f'{folder_path}/Analysis_result_{timestamp}.xlsx'
     
-    # sample = 'Papaya (RW)' # sample tested
-    _repeat = f'Moisture diffusivity of samples at different thickness and temperatures (m^2/s)'
-    
-    # format temperatures
-    temp_data = []
-    for i in range(len(temp)):
-    	new_temp = f'{temp[i]} °C'
+    # === Workbook Setup ===
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Moisture Diffusivity"
 
-    	if i == 0:
-    		_ = (_repeat, new_temp)
-    	else:
-    		_ = ('', new_temp)
+    # === Styling ===
+    bold_center = Font(bold=True)
+    center = Alignment(horizontal='center', vertical='center')
+    thin_border = Border(
+        left=Side(style='thin'),
+        right=Side(style='thin'),
+        top=Side(style='thin'),
+        bottom=Side(style='thin')
+    )
 
-    	temp_data.append(_)
+    # === Title Row (Row 1) ===
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=1 + len(temperatures))
+    ws.cell(row=1, column=1).value = "Moisture Diffusivity Data"
+    ws.cell(row=1, column=1).font = Font(bold=True, size=14)
+    ws.cell(row=1, column=1).alignment = center
 
-    # create custom header
-    headers = pd.MultiIndex.from_tuples(temp_data)
+    # === Header Row 1 (Row 2) ===
+    ws.cell(row=2, column=1).value = "Thickness (mm)"
+    ws.cell(row=2, column=1).font = bold_center
+    ws.cell(row=2, column=1).alignment = center
+    ws.merge_cells(start_row=2, start_column=2, end_row=2, end_column=1 + len(temperatures))
+    ws.cell(row=2, column=2).value = "Moisture diffusivity of samples (m^2/s)"
+    ws.cell(row=2, column=2).alignment = center
+    ws.cell(row=2, column=2).font = bold_center
 
-    index = [f'{i}mm' for i in thickness]
+    # === Header Row 2 (Row 3) ===
+    for col_index, temp in enumerate(temperatures, start=2):
+        ws.cell(row=3, column=col_index).value = f"{temp} °C"
+        ws.cell(row=3, column=col_index).alignment = center
+        ws.cell(row=3, column=col_index).font = bold_center
 
-    # create dataframe
-    df = pd.DataFrame(data, columns=headers, index=index)
-    
-    # df.to_excel(file_name) # convert dataframe to csv
+    # === Data Rows (Row 4+) ===
+    for row_index, thickness in enumerate(thicknesses, start=4):
+        ws.cell(row=row_index, column=1).value = thickness
+        ws.cell(row=row_index, column=1).alignment = center
+        for col_index, value in enumerate(data[row_index - 4], start=2):
+            ws.cell(row=row_index, column=col_index).value = value
+            ws.cell(row=row_index, column=col_index).alignment = center
 
-    print(f'Data has been written successfully to {file_name}')
 
-    return df
+    # === Apply Borders ===
+    max_row = 3 + len(thicknesses)
+    max_col = 1 + len(temperatures)
+    for row in ws.iter_rows(min_row=2, max_row=max_row, min_col=1, max_col=max_col):
+        for cell in row:
+            cell.border = thin_border
+
+    # === Adjust Column Widths ===
+    for col_letter in ['A', 'B', 'C', 'D'][:max_col]:
+        ws.column_dimensions[col_letter].width = 18
 
 
-def gen_act_energy_report(Ea, thickness):
+    try:
+        # === Save Workbook ===
+        wb.save(file_name)
+    except Exception as e:
+        print('Error writing Moisture Diffusivity to file')
+    else:
+        print(f'Moisture Diffusivity Data has been written successfully to {file_name}')
+
+    return file_name
+
+
+
+def gen_act_energy_report(Ea_data, thicknesses, file_path):
     '''
-    generates a report for activation
-    energy results
+    This function writes the activation
+    energy result to an excel sheet
     '''
-    # datestamp file
-    current_time = datetime.datetime.now()
-    timestamp = current_time.strftime('%Y-%m-%d')
-    file_name = f'Activation_energy_result_{timestamp}.csv'
-    
-    index = [f'{i}mm' for i in thickness]
-    headers = ['Parameters'] + index
-    data = [['Activation energy Ea (kJ/mol)'] + Ea]
+    # check if file exists
+    if os.path.exists(file_path):
+        wb = load_workbook(file_path)
+    else:
+        wb = Workbook()
 
-    # generate csv file
-    df = pd.DataFrame(data, columns=headers)
-    # df.to_excel(file_name, index=False)
+        # Remove default sheet if it's empty
+        if 'Sheet' in wb.sheetnames:
+            wb.remove(wb['Sheet'])
 
-    print("Activation energy report generated successfully") 
-    
-    return df
+    # Add new sheet
+    ws = wb.create_sheet(title=f'Thermodynamics result')
+  
+    # styling
+    bold = Font(bold=True)
+    title_font = Font(bold=True, size=14)
+    center = Alignment(horizontal='center', vertical='center')
+    thin_border = Border(
+        left=Side(style='thin'), right=Side(style='thin'),
+        top=Side(style='thin'), bottom=Side(style='thin')
+    )
+
+    num_cols = len(thicknesses) + 1  # +1 for the first column
+
+     # === Title Row ===
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=num_cols)
+    ws.cell(row=1, column=1).value = "Thermodynamics Data"
+    ws.cell(row=1, column=1).font = title_font
+    ws.cell(row=1, column=1).alignment = center
+
+    # === Header Row (Thickness) ===
+    ws.cell(row=2, column=1).value = "Thickness (mm)"
+    ws.cell(row=2, column=1).font = bold
+    ws.cell(row=2, column=1).alignment = center
+    for col, thickness in enumerate(thicknesses, start=2):
+        cell = ws.cell(row=2, column=col)
+        cell.value = thickness
+        cell.font = bold
+        cell.alignment = center
+
+    # === Data Row (Ea values) ===
+    ws.cell(row=3, column=1).value = "Activation energy Ea (kJ/mol)"
+    ws.cell(row=3, column=1).font = bold
+    ws.cell(row=3, column=1).alignment = center
+    for col, value in enumerate(Ea_data, start=2):
+        cell = ws.cell(row=3, column=col)
+        cell.value = value
+        cell.alignment = center
+   
+    # === Apply borders ===
+    for row in ws.iter_rows(min_row=2, max_row=3, min_col=1, max_col=num_cols):
+        for cell in row:
+            cell.border = thin_border
+
+    # === Adjust column widths ===
+    for col_index in range(1, num_cols + 1):
+        col_letter = chr(64 + col_index)  # e.g., 1 → 'A', 2 → 'B'
+        ws.column_dimensions[col_letter].width = 18
 
 
-def custom_csv_writer(temp, thickness, data, header, filename):
+    try:
+        # === Save Workbook ===
+        wb.save(file_path)
+    except Exception as e:
+        print('Error writing Activation Energy to file')
+    else:
+        print(f'Activation Energy Data has been written successfully to {file_path}')
+
+    return 0
+
+
+def custom_csv_writer(temperatures, thicknesses, data, header, file_path):
     '''
     this function writes data to a csv file
     '''
-    current_time = datetime.datetime.now()
-    timestamp = current_time.strftime('%Y-%m-%d')
-    file_name = f'{filename}_{timestamp}.csv'
-    
-    # format temperatures
-    temp_data = []
-    for i in range(len(temp)):
-    	new_temp = f'{temp[i]} °C'
+    try:
+        # Load workbook and sheet
+        wb = load_workbook(file_path)
+        sheet = wb['Thermodynamics result']
+        last_row = sheet.max_row
+        
+        # Style definitions
+        bold_font = Font(bold=True)
+        center_aligned = Alignment(horizontal='center')
+        
+        # Define border styles
+        full_border = Border(
+            left=Side(style='thin'),
+            right=Side(style='thin'),
+            top=Side(style='thin'),
+            bottom=Side(style='thin')
+        )    
+  
+        # Create header structure (2 rows)
+        
+        # Row 1: Empty cell + Merged "Enthalpy (j/mol)" header
+        sheet.cell(row=last_row+2, column=1).border = full_border
+        
+        # Merge and format enthalpy header
+        sheet.merge_cells(
+            start_row=last_row+2,
+            start_column=2,
+            end_row=last_row+2,
+            end_column=len(temperatures)+1
+        )
+        header_cell = sheet.cell(
+            row=last_row+2, 
+            column=2, 
+            value=header
+        )
 
-    	if i == 0:
-    		_ = (header, new_temp)
-    	else:
-    		_ = ('', new_temp)
+        header_cell.font = bold_font
+        header_cell.alignment = center_aligned
+        header_cell.border = full_border  # Apply full border to merged cell
+        
+        # Apply borders to all cells in the merged range
+        for col in range(2, len(temperatures)+2):
+            cell = sheet.cell(row=last_row+2, column=col)
+            cell.border = full_border
 
-    	temp_data.append(_)
+         # Row 2: "Thickness" + Temperature headers
+        sheet.cell(
+            row=last_row + len(temperatures), 
+            column=1, 
+            value="Thickness"
+        ).font = bold_font
+        
+        for col_idx, temp in enumerate(temperatures, start=2):
+            temp_cell = sheet.cell(
+                row=last_row+3,
+                column=col_idx,
+                value=f"{temp} °C"
+            )
+            temp_cell.font = bold_font
+            temp_cell.alignment = center_aligned
+            temp_cell.border = full_border
+        
+        # Data rows
+        for row_idx, (thickness, row_data) in enumerate(zip(thicknesses, data), start=last_row+4):
+            # Thickness column
+            sheet.cell(
+                row=row_idx,
+                column=1,
+                value=f"{thickness}mm"
+            ).border = full_border
+            
+            # Data columns
+            for col_idx, value in enumerate(row_data, start=2):
+                sheet.cell(
+                    row=row_idx,
+                    column=col_idx,
+                    value=value
+                ).border = full_border
+        
+        # Column formatting
+        sheet.column_dimensions['A'].width = 10  # Thickness column
+        for col in range(2, len(temperatures)+2):
+            sheet.column_dimensions[get_column_letter(col)].width = 12
+        
+        # Save changes
+        wb.save(file_path)
+        print(f"{header} appended successfully to {file_path}")
+        
+    except Exception as e:
+        print(f"Error: {str(e)}")
 
-
-    # create custom header
-    headers = pd.MultiIndex.from_tuples(temp_data)
-    index = [f'{i}mm' for i in thickness]
-
-    df = pd.DataFrame(data, columns=headers, index=index) # create dataframe
-    
-    # df.to_csv(file_name) # convert dataframe to a csv file
-
-    print(f'Data has been written successfully to {file_name}')
-
-    return df
-
+    return 0
+        
 
 def model_report_writer(data, temp):
     '''
@@ -291,15 +447,12 @@ def model_report_writer(data, temp):
     return result
 
 
-def create_dynamic_table(filename, folder_path, main_headers, sub_headers, data, temp, model_data=None):
+def create_dynamic_table(filename, file_path, main_headers, sub_headers, data, temp, thickness_list, best_model_list):
     '''
     creates and formats the models report sheet
     '''
     # create title
     title = f'Result summary of the statistical curve fitting analysis at {temp} °C'
-    current_time = datetime.datetime.now()
-    timestamp = current_time.strftime('%Y-%m-%d')
-    file_path = f'{folder_path}/{filename}_{timestamp}.xlsx'
     
     # check if file exists
     if os.path.exists(file_path):
@@ -313,17 +466,6 @@ def create_dynamic_table(filename, folder_path, main_headers, sub_headers, data,
 
     # Add new sheet
     ws = wb.create_sheet(title=f'Model Performance@{temp} °C')
-
-    # Create a workbook and select the active worksheet
-    # wb = Workbook()
-
-
-    # # Remove default sheet if it's empty
-    # if 'Sheet' in wb.sheetnames:
-    #     wb.remove(wb['Sheet'])
-
-    # # Add new sheet
-    # ws = wb.create_sheet(title='Model Performance')
 
     # merge 5 columns in the first row
     ws.merge_cells('A1:H1')
@@ -372,70 +514,51 @@ def create_dynamic_table(filename, folder_path, main_headers, sub_headers, data,
 
     # Handle writing of best model details
     
-    # # Border and font styles
-    # thin = Side(border_style="thin", color="000000")
-    # border = Border(left=thin, right=thin, top=thin, bottom=thin)
-    # center = Alignment(horizontal="center", vertical="center")
-    # bold_font = Font(bold=True)
-    # title_font = Font(bold=True)
+    # Styling
+    thin = Side(border_style="thin", color="000000")
+    border = Border(top=thin, left=thin, right=thin, bottom=thin)
+    bold_font = Font(bold=True)
+    center_alignment = Alignment(horizontal="center", vertical="center")
 
-    # # Title row (merged and styled)
-    # ws.merge_cells("A30:D30")
-    # ws["A31"] = "Model of Best Fit"
-    # ws["A31"].font = title_font
-    # ws["A31"].alignment = center
+    row = 25
 
-    # # Header row
-    # headers = ["S/N", "MODEL NAME", "", "MODEL CONSTANTS"]
-    # for col, header in zip(["A", "B", "C", "D"], headers):
-    #     cell = ws[f"{col}32"]
-    #     cell.value = header
-    #     cell.font = bold_font
-    #     cell.alignment = center
-    #     cell.border = border
+    # Pair each thickness with its corresponding model
+    for thickness, model in zip(thickness_list, best_model_list):
+        # Write header row
+        ws.cell(row=row, column=1, value="Model Name").font = bold_font
+        ws.cell(row=row, column=2, value="constants").font = bold_font
+        ws.cell(row=row, column=3, value=f"{thickness}mm").font = bold_font
+        
+        # Apply styling to header
+        for col in range(1, 4):
+            ws.cell(row=row, column=col).border = border
+            ws.cell(row=row, column=col).alignment = center_alignment
+            ws.column_dimensions[get_column_letter(col)].width = 15
+        
+        row += 1
 
-    # # Row 33 — Model serial and name
-    # ws["A33"] = 1
-    # ws["A33"].alignment = center
-    # ws["A33"].border = border
+        # Write model name row (first constant)
+        constants = list(model['constants'].items())
+        ws.cell(row=row, column=1, value=model['model name']).border = border
+        ws.cell(row=row, column=2, value=constants[0][0]).border = border  # 'a'
+        ws.cell(row=row, column=3, value=constants[0][1]).border = border  # value
+        row += 1
 
-    # ws["B33"] = model_data["model name"]
-    # ws["B33"].font = bold_font
-    # ws["B33"].alignment = center
-    # ws["B33"].border = border
+        # Write model eqn row (second constant)
+        ws.cell(row=row, column=1, value=model["model equation"]).border = border
+        ws.cell(row=row, column=2, value=constants[1][0]).border = border  # 'b'
+        ws.cell(row=row, column=3, value=constants[1][1]).border = border  # value
+        row += 1
 
-    # # Row 34 — Model equation
-    # ws["B34"] = model_data["model equation"]
-    # ws["B34"].alignment = center
-    # ws["B34"].border = border
+        # Write remaining constants if they exist
+        for const_name, const_value in constants[2:]:
+            ws.cell(row=row, column=1, value="").border = border
+            ws.cell(row=row, column=2, value=const_name).border = border
+            ws.cell(row=row, column=3, value=const_value).border = border
+            row += 1
 
-    # # Constants section (from row 34 down)
-    # row = 33
-    # for const, value in model_data["constants"].items():
-    #     ws[f"C{row}"] = const
-    #     ws[f"D{row}"] = value
-
-    #     ws[f"C{row}"].alignment = center
-    #     ws[f"D{row}"].alignment = center
-
-    #     ws[f"C{row}"].border = border
-    #     ws[f"D{row}"].border = border
-
-    #     row += 1
-
-    # # Fill in any missing cells with empty strings and apply borders/centering
-    # for r in range(32, row):
-    #     for col in ["A", "B", "C", "D"]:
-    #         cell = ws[f"{col}{r}"]
-    #         if cell.value is None:
-    #             cell.value = ""
-    #         cell.border = border
-    #         cell.alignment = center
-
-    # # Auto-adjust column widths (approximate by max length of content)
-    # for col in ["A", "B", "C", "D"]:
-    #     max_length = max(len(str(ws[f"{col}{r}"].value)) for r in range(31, row))
-    #     ws.column_dimensions[col].width = max(10, max_length + 2)
+        # Add blank row between sections
+        row += 1
 
 
     # Save the workbook
@@ -444,7 +567,7 @@ def create_dynamic_table(filename, folder_path, main_headers, sub_headers, data,
     return file_path
 
 
-# def df_writer(df_list):
+# def df_writer(df_list, folder_path):
 #     '''
 #     function takes a list of dataframes and saves
 #     them to different sheets in one excel file.
@@ -452,18 +575,25 @@ def create_dynamic_table(filename, folder_path, main_headers, sub_headers, data,
 #     # create timestamp
 #     current_time = datetime.datetime.now()
 #     timestamp = current_time.strftime('%Y-%m-%d')
-#     file_name = f'Thermodynamics_Results_{timestamp}.xlsx'
+#     file_name = 'Analysis Results'
+#     file_path = f'{folder_path}/{file_name}_{timestamp}.xlsx'
+#     df_list[0].to_excel(file_path)
+   
     
 #     # Create an Excel writer object
-#     with pd.ExcelWriter(file_name, engine="xlsxwriter") as writer:
+#     with pd.ExcelWriter(file_path, engine="xlsxwriter") as writer:
 #         df_list[0].to_excel(writer, sheet_name="Moisture Diffusivity",)  # First sheet
-#         df_list[1].to_excel(writer, sheet_name="Activation Energy", index=False)  # Second sheet
-#         df_list[2].to_excel(writer, sheet_name="Enthalpy" )  # Third sheet
-#         df_list[3].to_excel(writer, sheet_name="Entropy")  # Forth sheet
-#         df_list[4].to_excel(writer, sheet_name="Gibbs Free Energy")  # Fifth sheet
+
+#         if all(i is not None for i in df_list[1:]):
+#             df_list[1].to_excel(writer, sheet_name="Activation Energy", index=False)  # Second sheet
+#             df_list[2].to_excel(writer, sheet_name="Enthalpy" )  # Third sheet
+#             df_list[3].to_excel(writer, sheet_name="Entropy")  # Forth sheet
+#             df_list[4].to_excel(writer, sheet_name="Gibbs Free Energy")  # Fifth sheet
 
     
 #     print("Excel file with multiple sheets saved successfully!")
+
+#     return file_path
 
 
 def df_writer(df_list, folder_path):
@@ -497,7 +627,7 @@ def df_writer(df_list, folder_path):
     
     print("Excel file with multiple sheets saved successfully!")
 
-    return 0
+    return f'{folder_path}/results.xlsx'
 
 
 
@@ -701,7 +831,7 @@ def plot_drying_curve(best_model_results, folder_path, file_path):
             f'Drying curve ({thickness}mm)',
             ['Time (mins)', 'MR (Experimental)', 'MR (Predicted)']
         )
-        
+
         plt.legend(fontsize=10, title_fontsize=12, loc="upper right")
 
         plt.xlabel("Time (mins)", fontsize=12)

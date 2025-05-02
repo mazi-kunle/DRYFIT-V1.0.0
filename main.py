@@ -54,12 +54,11 @@ def thermo_calc():
 	# Handle type A: only one temperature
 	if len(keys) == 1:
 		# write moisture diffusivity report to file
-		df1 = write_csv(output, temp, thickness)
-		df_writer([df1, None, None, None, None], folder_path)
+		file_path = Deff_writer(output, temp, thickness, folder_path)
 
 	else:
 		# write moisture diffusivity report to file
-		df1 = write_csv(output, temp, thickness)
+		file_path = Deff_writer(output, temp, thickness, folder_path)
 		Ea_data = []
 		lndo_data = []
 		for Deff in output:
@@ -68,27 +67,25 @@ def thermo_calc():
 			lndo_data.append(lnDo)
 			    
 		# generate activation energy result
-		df2 = gen_act_energy_report(Ea_data, thickness)
+		gen_act_energy_report(Ea_data, thickness, file_path)
 
 		# generate enthalpy result
 		enthalpy_data = [get_enthalpy(Ea_data[i]*1000, temp) for i in range(len(Ea_data))]
-		df3 = custom_csv_writer(temp, thickness, enthalpy_data, 'Enthalpy data (j/mol)', 'enthalpy_data') 
+		custom_csv_writer(temp, thickness, enthalpy_data, 'Enthalpy data (j/mol)', file_path) 
 
 		# generate entropy result
 		entropy_data = [get_entropy(lndo_data[i], temp) for i in range(len(Ea_data))]
-		df4 = custom_csv_writer(temp, thickness, entropy_data, 'Entropy data (j/mol.K)', 'entropy_data')
+		custom_csv_writer(temp, thickness, entropy_data, 'Entropy data (j/mol.K)', file_path)
 
 		# generate gibbs free energy result
 		gibbs_data = [get_gibbs(get_enthalpy(Ea_data[i]*1000, temp), get_entropy(lndo_data[i], temp), temp) for i in range(len(Ea_data))]
-		df5 = custom_csv_writer(temp, thickness, gibbs_data, 'Gibbs free energy data (j/mol)', 'gibbs_energy_data')
-
-		
-		df_writer([df1, df2, df3, df4, df5], folder_path)
+		custom_csv_writer(temp, thickness, gibbs_data, 'Gibbs free energy data (j/mol)', file_path)
 
 
-	return data
 
-data = thermo_calc()
+	return data, file_path
+
+data, file_path = thermo_calc()
 
 # get keys
 keys = list(data.keys())
@@ -101,7 +98,6 @@ thickness_list = list(data[keys[0]].keys())
 
 
 best_model_result = {}
-# model_list = []
 best_model_list = []
 model_constants_dict = {}
 
@@ -123,10 +119,9 @@ for temp in keys:
 			}
 
 
+
 	# group best_model_list by thickness 
 	groupby_thickness(best_model_result, best_model_list, thickness_list, temp)
-
-	best_model_list = [] # reset list 
 	
 
 	r_data = model_report_writer(new_data, temp)
@@ -135,14 +130,16 @@ for temp in keys:
 
 
 	# create models statistical evaluation report
-	file_path = create_dynamic_table(f'model-results', folder_path, main_headers, sub_headers, r_data, temp)
+	create_dynamic_table(f'model-results', file_path, main_headers,
+					sub_headers, r_data, temp, thickness_list, best_model_list)
 	
+	best_model_list = [] # reset list 
+
 	model_constants_dict.update(new_data)
 
 # generate model constants report
 generate_report(model_constants_dict, file_path)
 
-# rprint(best_model_result)
 
 plot_handler(best_model_result, folder_path, file_path)
 
