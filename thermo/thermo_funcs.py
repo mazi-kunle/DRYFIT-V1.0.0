@@ -42,6 +42,7 @@ def d_eff(time, MR, thickness):
     # plt.show()
 
     Deff = -(slope * 4 * (half_thickness**2))/(np.pi**2)
+    # print(slope, Deff)
     return Deff
 
 
@@ -78,6 +79,7 @@ def get_activation_energy(Deff, temp):
     intercept = model.intercept_
     # print(slope, intercept)
     activation_energy = -R * slope
+
     return activation_energy, intercept
 
 def get_enthalpy(Ea, temp):
