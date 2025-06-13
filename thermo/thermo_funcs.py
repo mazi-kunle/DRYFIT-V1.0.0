@@ -21,7 +21,7 @@ def d_eff(time, MR, thickness):
     
     thickness = thickness*0.001 # convert thickness from mm to m
 
-    half_thickness = thickness/2   # get half of the thickness
+    half_thickness = thickness / 2  # get half of the thickness
 
     # perform linear regression
     model = LinearRegression()
@@ -77,7 +77,7 @@ def get_activation_energy(Deff, temp):
 
     slope = model.coef_[0]
     intercept = model.intercept_
-    # print(slope, intercept)
+    print(slope, intercept)
     activation_energy = -R * slope
 
     return activation_energy, intercept
