@@ -1,6 +1,6 @@
 # 📦 Dryfit
 
-**Dryfit** is a research-based software developed to analyze data from the dehydration of agro-products. It offers tools for model fitting, moisture ratio analysis, and visualization to support post-harvest technology and food processing research.
+**Dryfit** is a research-based software developed to analyze moisture ratio history data from the dehydration of agro-products. It offers tools to fit several thin-layer drying models to M.R history data, evaluates the goodness of fit of each model, moisture diffusivity computation, and visualization amongst many others to support post-harvest technology and food processing research.
 
 ---
 
@@ -20,10 +20,15 @@
 
 ## ✨ Features
 
-- Load and analyze drying data from Excel files  
-- Fit multiple drying models (e.g., Page, Henderson and Pabis, Logarithmic)  
-- Visualize fitted curves and residuals  
-- Calculate statistical parameters (R², RMSE, χ², etc.)  
+- Load and analyze moisture ratio history data from Excel file
+- Calculate moisture diffusivity.
+- Calculate thermodynamic properties (Enthalpy, Entropy and Gibbs Free Energy) 
+- Fit multiple thin-layer drying models using Non-linear regression (e.g., Page, Henderson and Pabis, Logarithmic)    
+- Calculate statistical parameters (R², RMSE, SSE)
+- Use statictical parameters to determine the best model.
+- Use best model to predict moisture ratio from time.
+- Generate data for drying, drying rate and krischer plots.
+- Create visual plots.
 - Export analysis results and plots  
 - User-friendly GUI (Tkinter)
 
@@ -31,7 +36,7 @@
 
 ## ⚙️ Installation
 
-> Requires Python 3.9 or later
+> Requires Python 3.13.0 or later
 
 *Add installation instructions here.*
 
