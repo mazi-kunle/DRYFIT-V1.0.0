@@ -6,9 +6,10 @@
 
 ## 🗂 Table of Contents
 
+- [System Requirements](#https://github.com/mazi-kunle/DRYING-SOFTWARE/edit/main/README.md#-system-requirements)  
 - [Features](#features)
-- [System Requirements](#system-requirements)  
-- [Installation](#installation)  
+- [Installation](#installation)
+- [Data Format](#usage)
 - [Usage](#usage)  
 - [Screenshots](#screenshots)  
 - [Models Supported](#models-supported)  
@@ -51,18 +52,18 @@
 DryFit can be run in two ways:
 ### 🔹 Option 1: Using Python (for developers or researchers with Python installed)
 1. **Clone the repository:**
-  ```bash
-  git clone https://github.com/mazi-kunle/DRYING-SOFTWARE.git
-  cd DRYING-SOFTWARE
-  ```
+   ```bash
+     git clone https://github.com/mazi-kunle/DRYING-SOFTWARE.git
+     cd DRYING-SOFTWARE
+   ```
 2. **Install dependencies:**
    ```bash
-   pip install -r requirements.txt
+    pip install -r requirements.txt
    ```
-3. **Run the application:**
-  ```bash
-  python app.py
-  ```
+4. **Run the application:**
+   ```bash
+    python app.py
+   ```
 ### 🔹 Option 2: Windows Executable Installation (for End Users)
 
 DryFit can be installed like a regular Windows desktop application — **no need to install Python or run any scripts**.
