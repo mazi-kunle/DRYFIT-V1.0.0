@@ -20,8 +20,8 @@
 ---
 ## 💻 System Requirements
 - **Operating System:** Windows 7 or higher  
-- **Python:** 3.13.0 or later  
-- **Dependencies:**
+- **Python (for developers):** 3.13.0 or later  
+- **Dependencies (for developers):**
   - numpy  
   - pandas  
   - scipy  
@@ -48,14 +48,45 @@
 
 ## ⚙️ Installation
 
-> Requires Python 3.13.0 or later
+DryFit can be run in two ways:
+### 🔹 Option 1: Using Python (for developers or researchers with Python installed)
+1. **Clone the repository:**
+  ```bash
+  git clone https://github.com/mazi-kunle/DRYING-SOFTWARE.git
+  cd DRYING-SOFTWARE
+  ```
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Run the application:**
+  ```bash
+  python app.py
+  ```
+### 🔹 Option 2: Windows Executable Installation (for End Users)
 
-```bash
-git clone https://github.com/mazi-kunle/DRYING-SOFTWARE.git
-cd DRYING-SOFTWARE
-pip install -r requirements.txt
-python app.py
-```
+DryFit can be installed like a regular Windows desktop application — **no need to install Python or run any scripts**.
+
+#### 🧾 Steps:
+
+1. Download the installer from the [Releases](https://github.com/yourusername/dryfit/releases) page  
+   (e.g., `DryFit_Setup.exe`).
+2. Double-click the downloaded file to run the installer.
+3. Follow the on-screen instructions to complete installation.
+4. After installation:
+   - Launch the app from the **Start Menu**
+   - Or use the **Desktop shortcut** (if selected during setup)
+
+✅ **Note:** This version is built using [PyInstaller](https://www.pyinstaller.org/) and includes all required dependencies bundled within the executable.
+
+#### 💡 System Requirements:
+
+- **Operating System:** Windows 10 or higher (64-bit)
+- **Disk Space:** ~100MB (depends on packaging)
+- **Permissions:** Administrator access may be required for installation
+
+> This option is recommended for non-technical users or when sharing the app with field researchers and practitioners.
+
 ---
 ## 📂 Data Format
 
