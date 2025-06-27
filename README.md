@@ -59,9 +59,8 @@ python app.py
 ---
 ## 📂 Data Format
 
-- **Input data:** DryFit only accepts excel files (`.xlsx`) with the following structure.
-- **Output data:** Results are stored in a folder which includes an excel file containing the calculated data in several sheets and the required plots in `jpeg` format.
-
+**Input data:** DryFit only accepts excel files (`.xlsx`) with the following structure.
+  
 | Temperature (Celcius)| Thickness (mm)| Time (min) | Moisture Ratio |
 |----------------------|---------------|------------|----------------|
 | 60                   | 1.5           | 0          | 1.000          |
@@ -70,13 +69,15 @@ python app.py
 |                      |               | ...        | ...            |
 
 **Requirements:**
-- Each dataset for a particular experiment should be placed in several sheets in one excel file.
-- The excel sheet must contain only 4 columns.
-- The first column must contain only one temperature value in degree Celcius.
-- The second column must contain only one thickness value in mm
-- The third column can have several time values in minutes
-- The last column can have several M.R values (Dry Basis).
-  
+  - Each dataset for a particular experiment should be placed in several sheets in one excel file.
+  - The excel sheet must contain only 4 columns.
+  - The first column must contain only one temperature value in degree Celcius.
+  - The second column must contain only one thickness value in mm
+  - The third column can have several time values in minutes
+  - The last column can have several M.R values (Dry Basis).
+
+**Output data:** Results are stored in a folder which includes an excel file containing the calculated data in several sheets and the required plots in `jpeg` format.
+
 ---
 
 ## 🚀 Usage
