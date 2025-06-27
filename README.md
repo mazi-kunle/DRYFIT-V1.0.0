@@ -124,7 +124,7 @@ From the GUI:
 ---
 
 ## 🖼 Screenshots
-![DryFit Homepage](https://raw.githubusercontent.com/mazi-kunle/DRYING-SOFTWARE/blob/main/Assets/Dryfit_home.jpg)
+![DryFit Homepage](Assets/Dryfit_home.jpg)
 _Add screenshots of the GUI interface, model plots, or output tables here._
 
 ---
