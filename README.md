@@ -104,8 +104,8 @@ DryFit can be installed like a regular Windows desktop application — **no need
   - Each dataset for a particular experiment should be placed in several sheets in one excel file.
   - The excel sheet must contain only 4 columns.
   - The first column must contain only one temperature value in degree Celcius.
-  - The second column must contain only one thickness value in mm
-  - The third column can have several time values in minutes
+  - The second column must contain only one thickness value in mm.
+  - The third column can have several time values in minutes.
   - The last column can have several M.R values (Dry Basis).
 
 **Output data:** Results are stored in a folder which includes an excel file containing the calculated data in several sheets and the required plots in `jpeg` format.
@@ -116,7 +116,7 @@ DryFit can be installed like a regular Windows desktop application — **no need
 
 From the GUI:
 1. Click the **select...** button to upload your M.R history data file.  
-2. Click **Start Analysis**  
+2. Click **Start Analysis**.
 3. After some time, a success or error message will be displayed. 
 4. View results in the results folder created.  
 5. in the case of an error message, click the help button, read the documentation and format the input sheet accordingly.
@@ -124,7 +124,7 @@ From the GUI:
 ---
 
 ## 🖼 Screenshots
-![DryFit Homepage](Assets/Dryfit_home.jpg)
+![DryFit Homepage](/Assets/Dryfit_home.jpg)
 _Add screenshots of the GUI interface, model plots, or output tables here._
 
 ---
