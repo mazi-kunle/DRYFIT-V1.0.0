@@ -114,14 +114,12 @@ DryFit can be installed like a regular Windows desktop application — **no need
 
 ## 🚀 Usage
 
-*Add usage instructions here.*
-
 From the GUI:
-1. Click to upload your Excel drying data file.  
-2. Select the model(s) to fit.  
-3. Click **Analyze**.  
-4. View plots, parameters, and statistics.  
-5. Export results as needed.
+1. Click the **select...** button to upload your M.R history data file.  
+2. Click **Start Analysis**  
+3. After some time, a success or error message will be displayed. 
+4. View results in the results folder created.  
+5. in the case of an error message, click the help button, read the documentation and format the input sheet accordingly.
 
 ---
 
