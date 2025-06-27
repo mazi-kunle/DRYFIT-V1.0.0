@@ -6,7 +6,8 @@
 
 ## 🗂 Table of Contents
 
-- [Features](#features)  
+- [Features](#features)
+- [System Requirements](#system-requirements)  
 - [Installation](#installation)  
 - [Usage](#usage)  
 - [Screenshots](#screenshots)  
@@ -16,6 +17,17 @@
 - [License](#license)  
 - [Acknowledgements](#acknowledgements)
 
+---
+## 💻 System Requirements
+- **Operating System:** Windows 7 or higher  
+- **Python:** 3.13.0 or later  
+- **Dependencies:**
+  - numpy  
+  - pandas  
+  - scipy  
+  - matplotlib  
+  - customtkinter  
+  - openpyxl
 ---
 
 ## ✨ Features
@@ -38,8 +50,12 @@
 
 > Requires Python 3.13.0 or later
 
-*Add installation instructions here.*
-
+```bash
+git clone
+cd DRYING-SOFTWARE
+pip install -r requirements.txt
+python app.py
+```
 ---
 
 ## 🚀 Usage
