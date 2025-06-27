@@ -6,7 +6,7 @@
 
 ## 🗂 Table of Contents
 
-- [System Requirements](#https://github.com/mazi-kunle/DRYING-SOFTWARE/edit/main/README.md#-system-requirements)  
+- [System Requirements](#system-requirements)  
 - [Features](#features)
 - [Installation](#installation)
 - [Data Format](#usage)
