@@ -169,12 +169,12 @@ Special thanks to the following individuals and resources that contributed to th
 
 ## 👤 Credits
 
-**Developer:** Olakunle Micheal Olorunfemi
-**Supervisor:** Professor Akinjide. A. Akinola
-**Institution:** University Of Lagos
-**Department:** Chemical Engineering 
-**Project Title:** Development of a Computer Software for Analysis of Data from Agro-Products Dehydration  
-**Date:** July 2025
+- **Developer:** Olakunle Micheal Olorunfemi
+- **Supervisor:** Professor Akinjide. A. Akinola
+- **Institution:** University Of Lagos
+- **Department:** Chemical Engineering 
+- **Project Title:** Development of a Computer Software for Analysis of Data from Agro-Products Dehydration  
+- **Date:** July 2025
 
 ## 📬 Contact Us
 
@@ -186,6 +186,6 @@ You can reach out via:
 - 🏫 Institution: Chemical Engineering, University of Lagos
 - 📍 Location: Nigeria
 
-If you encounter issues with the software, please report them through the [GitHub Issues](https://github.com/yourusername/dryfit/issues) page.
+If you encounter issues with the software, please report them through the [GitHub Issues](https://github.com/mazi-kunle/dryfit/issues) page.
 
 
