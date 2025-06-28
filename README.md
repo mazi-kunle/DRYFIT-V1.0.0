@@ -13,11 +13,9 @@
 - [Usage](#usage)  
 - [Screenshots](#screenshots)  
 - [Thin Layer Drying Models Supported](#thin-layer-drying-models-supported)
-- [Project Structure](#project-structure)  
-- [Contributing](#contributing)  
-- [License](#license)  
 - [Acknowledgements](#acknowledgements)
-
+- [Credits](#credits)
+- [Contact Us](#contact-us)
 ---
 ## 💻 System Requirements
 - **Operating System:** Windows 7 or higher  
