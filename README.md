@@ -12,7 +12,7 @@
 - [Data Format](#usage)
 - [Usage](#usage)  
 - [Screenshots](#screenshots)  
-- [Models Supported](#models-supported)  
+- [Thin Layer Drying Models Supported](#thin-layer-drying-models-supported)
 - [Project Structure](#project-structure)  
 - [Contributing](#contributing)  
 - [License](#license)  
@@ -128,14 +128,27 @@ From the GUI:
 
 ---
 
-## 📊 Models Supported
-
-- Newton Model  
-- Page Model  
-- Henderson and Pabis Model  
-- Logarithmic Model  
-- Midilli et al. Model  
-- Two-term exponential model  
+## 📊 Thin Layer Drying Models
+DryFit supports the following mathematical models
+ 
+| S/N | Model Name                 | Equation                                       |
+|-----|----------------------------|------------------------------------------------|
+| 1   | Modified Henderson & Pabis | MR = a*exp(-k*x) + b*exp(-g*x) + c*exp(-h*x)   |
+| 2   | Henderson & Pabis          | MR = a*exp(-k*(x^n))                           |
+| 3   | Weibull                    | MR = (a-b)*(exp(-k*(x^n)))                     |
+| 4   | Page                       | MR = exp(-k*(x^n))                             |
+| 5   | Modified Page              | MR = exp(-(k*(x^n)))                           |  
+| 6   | Haghi & Ghanadzadeh        | MR = a*exp(-b*(x^c)) + (d*(x^2)) + (e*x) + f   |
+| 7   | Verma et al                | MR = a*exp(-k*t) + ((1-a)*exp(-g*x))           |
+| 8   | Midilli et al              | MR = a*exp(-k*x) + (b*x)                       |
+| 9   | Peleg                      | MR = 1 - (x / (a+(b*x)))                       |
+| 10  | Newton                     | MR = exp(-k*x)                                 |
+| 11  | Logarithmic                | MR = a*exp(-k*t) + c                           |
+| 12  | Silva et al                | MR = exp(-a*x - b*sqrt(x))                     |
+| 13  | Wang and Singh             | MR = 1 + a*t + b*t^2                           |
+| 14  | Two-term                   | MR = a*exp(-k*t) + b*exp(-g*t)                 |
+| 15  | Demir et al                | MR = a*exp(-k*t)^n + b                         |
+| 16  | Hill et al                 | MR = a*exp(-k*t^n) + b*exp(-g*t^n)             |
 
 ---
 
