@@ -133,7 +133,7 @@ DryFit supports the following mathematical models
  
 | S/N | Model Name                 | Equation                                       |
 |-----|----------------------------|------------------------------------------------|
-| 1   | Modified Henderson & Pabis | MR = a.exp(-k*x) + b.exp(-g*x) + c.exp(-h*x)   |
+| 1   | Modified Henderson & Pabis | MR = a\*exp(-k*x) + b\*exp(-g*x) + c\*exp(-h*x)   |
 | 2   | Henderson & Pabis          | MR = a*exp(-k*(x^n))                           |
 | 3   | Weibull                    | MR = (a-b)*(exp(-k*(x^n)))                     |
 | 4   | Page                       | MR = exp(-k*(x^n))                             |
