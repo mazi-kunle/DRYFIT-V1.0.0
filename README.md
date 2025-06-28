@@ -152,5 +152,40 @@ DryFit supports the following mathematical models
 
 ---
 
-## 🧾 Project Structure
+## 🙌 Acknowledgements
+
+Special thanks to the following individuals and resources that contributed to the development of DryFit:
+
+- Professor Akinjide. A. Akinola — for academic guidance and support.
+- The Department of Chemical Engineering, University Of Lagos.
+- Python community and open-source libraries:
+  - SciPy
+  - pandas
+  - matplotlib
+  - customtkinter
+- Fellow researchers who tested early versions of the software
+
+---
+
+## 👤 Credits
+
+**Developer:** Olakunle Micheal Olorunfemi
+**Supervisor:** Professor Akinjide. A. Akinola
+**Institution:** University Of Lagos
+**Department:** Chemical Engineering 
+**Project Title:** Development of a Computer Software for Analysis of Data from Agro-Products Dehydration  
+**Date:** July 2025
+
+## 📬 Contact Us
+
+Have questions, feedback, or suggestions?
+
+You can reach out via:
+
+- 📧 Email: 180401040@live.unilag.edu.ng
+- 🏫 Institution: Chemical Engineering, University of Lagos
+- 📍 Location: Nigeria
+
+If you encounter issues with the software, please report them through the [GitHub Issues](https://github.com/yourusername/dryfit/issues) page.
+
 
