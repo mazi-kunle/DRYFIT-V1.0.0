@@ -125,7 +125,6 @@ From the GUI:
 
 ## 🖼 Screenshots
 ![DryFit Homepage](./Dryfit_home.jpg)
-_Add screenshots of the GUI interface, model plots, or output tables here._
 
 ---
 
