@@ -12,7 +12,7 @@
 - [Data Format](#usage)
 - [Usage](#usage)  
 - [Screenshots](#screenshots)  
-- [Thin Layer Drying Models Supported](#thin-layer-drying-models-supported)
+- [Thin Layer Drying Models](#thin-layer-drying-models)
 - [Acknowledgements](#acknowledgements)
 - [Credits](#credits)
 - [Contact Us](#contact-us)
