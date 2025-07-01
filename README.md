@@ -6,7 +6,7 @@
 
 ## 🗂 Table of Contents
 
-- [System Requirements](#system-requirements)  
+- [System Requirements](#-system-requirements)  
 - [Features](#features)
 - [Installation](#installation)
 - [Data Format](#usage)
