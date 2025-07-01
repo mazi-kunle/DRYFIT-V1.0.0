@@ -92,7 +92,7 @@ def model_fitter(time, MR, best_model_list):
                     'constants': params['Constants'],
                     'time': time,
                     'MR1': MR, # experimental data
-                    'MR2': eval(model)(np.array(range(0, max(time) + 1)), *popt) # predicted data
+                    'MR2': eval(model)(np.array(range(min(time), max(time) + 1)), *popt) # predicted data
                 }
 
                 flag = params['R_Square']
@@ -105,6 +105,7 @@ def model_fitter(time, MR, best_model_list):
         except Exception as e:
             print(e)
             print(f'Error in model {i}')
+            raise ValueError(f'Error in model {i}')
 
             params = {
                 'R_Square': 'NOT FOUND',
