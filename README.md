@@ -7,15 +7,15 @@
 ## 🗂 Table of Contents
 
 - [System Requirements](#-system-requirements)  
-- [Features](#features)
-- [Installation](#installation)
-- [Data Format](#usage)
-- [Usage](#usage)  
-- [Screenshots](#screenshots)  
-- [Thin Layer Drying Models](#thin-layer-drying-models)
-- [Acknowledgements](#acknowledgements)
-- [Credits](#credits)
-- [Contact Us](#contact-us)
+- [Features](#-features)
+- [Installation](#-installation)
+- [Data Format](#-data-format)
+- [Usage](#-usage)  
+- [Screenshots](#-screenshots)  
+- [Thin Layer Drying Models](#-thin-layer-drying-models)
+- [Acknowledgements](#-acknowledgements)
+- [Credits](#-credits)
+- [Contact Us](#-contact-us)
 ---
 ## 💻 System Requirements
 - **Operating System:** Windows 7 or higher  
