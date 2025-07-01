@@ -8,7 +8,7 @@
 
 - [System Requirements](#-system-requirements)  
 - [Features](#-features)
-- [Installation](#-%EF%B8%8Finstallation)
+- [Installation](#%EF%B8%8F-installation)
 - [Data Format](#-data-format)
 - [Usage](#-usage)  
 - [Screenshots](#-screenshots)  
