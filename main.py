@@ -20,9 +20,13 @@ def thermo_calc(excel_file_path):
 	function to handles all thermodynamics calculations
 	'''
 	global folder_path # accessing the global variable
-	folder_path = make_dir()
+	# folder_path = make_dir()
 
-	data = file_reader(excel_file_path) # extract M.R from excel file
+	try:
+		data = file_reader(excel_file_path) # extract M.R history datafrom excel file
+	except Exception as e:
+		raise ValueError(e)
+
 
 	# get keys
 	keys = list(data.keys())
@@ -42,17 +46,19 @@ def thermo_calc(excel_file_path):
 			try:
 				time = data[key][i]['time'] # get time
 				MR = data[key][i]['MR'] # get MR
-			except Exception as e:
-				print('Error!!! Pls Recheck data in files')
-				continue
-			else:
+
 				Deff = d_eff(time, MR, i) # calculate moisture diffusivity.
 			
 				_.append(Deff)
+			
+			except Exception as e:
+				raise ValueError('Error: Ensure Time and M.R are well formated. Read the documentation for more details')
+			
 
 		output.append(_) # format d_eff to be written
 
-
+	folder_path = make_dir() # Create folder to store results
+	
 	# Handle type A: only one temperature
 	if len(keys) == 1:
 		# write moisture diffusivity report to file
@@ -89,7 +95,13 @@ def thermo_calc(excel_file_path):
 	return data, file_path
 
 def main(excel_file_path):
-	data, file_path = thermo_calc(excel_file_path)
+	
+	try:
+		data, file_path = thermo_calc(excel_file_path)
+	
+	except Exception as e:
+		raise ValueError(e)
+		return 1
 
 	# get keys
 	keys = list(data.keys())
@@ -148,7 +160,7 @@ def main(excel_file_path):
 	plot_handler(best_model_result, folder_path, file_path)
 
 
-	return 0
+	return folder_path
 
 
 
