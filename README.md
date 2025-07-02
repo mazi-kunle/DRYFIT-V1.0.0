@@ -16,6 +16,7 @@
 - [Acknowledgements](#-acknowledgements)
 - [Credits](#-credits)
 - [Contact Us](#-contact-us)
+
 ---
 ## 💻 System Requirements
 - **Operating System:** Windows 7 or higher  
@@ -27,6 +28,7 @@
   - matplotlib  
   - customtkinter  
   - openpyxl
+
 ---
 
 ## ✨ Features
@@ -62,6 +64,7 @@ DryFit can be run in two ways:
    ```bash
     python app.py
    ```
+   
 ### 🔹 Option 2: Windows Executable Installation (for End Users)
 
 DryFit can be installed like a regular Windows desktop application — **no need to install Python or run any scripts**.
@@ -115,7 +118,7 @@ DryFit can be installed like a regular Windows desktop application — **no need
 From the GUI:
 1. Click the **select...** button to upload your M.R history data file.  
 2. Click **Start Analysis**.
-3. After some time, a success or error message will be displayed. 
+3. After 2 minutes or less, a success or error message will be displayed. 
 4. View results in the results folder created.  
 5. in the case of an error message, click the help button, read the documentation and format the input sheet accordingly.
 
