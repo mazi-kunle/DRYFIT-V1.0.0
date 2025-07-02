@@ -116,7 +116,7 @@ DryFit can be installed like a regular Windows desktop application — **no need
 ## 🚀 Usage
 
 From the GUI:
-1. Click the **select...** button to upload your M.R history data file.  
+1. Click the **Select...** button to upload your M.R history data file.  
 2. Click **Start Analysis**.
 3. After 2 minutes or less, a success or error message will be displayed. 
 4. View results in the results folder created.  
