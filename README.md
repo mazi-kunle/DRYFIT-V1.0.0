@@ -87,14 +87,14 @@ DryFit can be installed like a regular Windows desktop application — **no need
 - **Disk Space:** ~100MB (depends on packaging)
 - **Permissions:** Administrator access may be required for installation
 
-> This option is recommended for non-technical users or when sharing the app with field researchers and practitioners.
+> This option is recommended for non-technical users, field researchers and practitioners.
 
 ---
 ## 📂 Data Format
 
 **Input data:** DryFit only accepts excel files (`.xlsx`) with the following structure.
   
-| Temperature (Celcius)| Thickness (mm)| Time (min) | Moisture Ratio |
+| Temperature (Celcius)| Thickness (mm)| Time (mins) | Moisture Ratio |
 |----------------------|---------------|------------|----------------|
 | 60                   | 1.5           | 0          | 1.000          |
 |                      |               | 10         | 0.850          |
