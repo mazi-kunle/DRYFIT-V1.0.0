@@ -5,10 +5,12 @@ import datetime
 import json
 import matplotlib.pyplot as plt
 import numpy as np
+import openpyxl
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, Border, Side
 from openpyxl.utils import get_column_letter
 import os
+import stat
 import pandas as pd
 import random
 from rich import print as rprint
@@ -234,7 +236,9 @@ def Deff_writer(data, temperatures, thicknesses, folder_path):
     try:
         # === Save Workbook ===
         wb.save(file_name)
+    
     except Exception as e:
+        print(e)
         print('Error writing Moisture Diffusivity to file')
     else:
         print(f'Moisture Diffusivity Data has been written successfully to {file_name}')
@@ -567,35 +571,6 @@ def create_dynamic_table(filename, file_path, main_headers, sub_headers, data, t
     return file_path
 
 
-# def df_writer(df_list, folder_path):
-#     '''
-#     function takes a list of dataframes and saves
-#     them to different sheets in one excel file.
-#     '''
-#     # create timestamp
-#     current_time = datetime.datetime.now()
-#     timestamp = current_time.strftime('%Y-%m-%d')
-#     file_name = 'Analysis Results'
-#     file_path = f'{folder_path}/{file_name}_{timestamp}.xlsx'
-#     df_list[0].to_excel(file_path)
-   
-    
-#     # Create an Excel writer object
-#     with pd.ExcelWriter(file_path, engine="xlsxwriter") as writer:
-#         df_list[0].to_excel(writer, sheet_name="Moisture Diffusivity",)  # First sheet
-
-#         if all(i is not None for i in df_list[1:]):
-#             df_list[1].to_excel(writer, sheet_name="Activation Energy", index=False)  # Second sheet
-#             df_list[2].to_excel(writer, sheet_name="Enthalpy" )  # Third sheet
-#             df_list[3].to_excel(writer, sheet_name="Entropy")  # Forth sheet
-#             df_list[4].to_excel(writer, sheet_name="Gibbs Free Energy")  # Fifth sheet
-
-    
-#     print("Excel file with multiple sheets saved successfully!")
-
-#     return file_path
-
-
 def df_writer(df_list, folder_path):
     '''
     function takes a list of dataframes and saves
@@ -804,14 +779,14 @@ def plot_drying_curve(best_model_results, folder_path, file_path):
             MR2 = best_model_results[thickness][temp]['MR2'] # predicted moisture ratio
  
             MR_ = []
-            for i in range(0, max(time)+1):
+            for i in range(min(time), max(time)+1):
                 if i in time:
                     MR_.append(MR1[np.where(time == i)[0][0]])
                 else:
                     MR_.append('')
 
             data[thickness][temp] = {
-                'time': list(range(0, max(time) + 1)),
+                'time': list(range(min(time), max(time) + 1)),
                 'MR_ex': MR_,
                 'MR_pre': MR2
             }
@@ -823,7 +798,7 @@ def plot_drying_curve(best_model_results, folder_path, file_path):
                 marker=random.choice(markers))
                        
 
-            plt.plot(list(range(0, max(time)+1)), MR2, label=f'Predicted: {temp} Degrees Celcius',
+            plt.plot(list(range(min(time), max(time)+1)), MR2, label=f'Predicted: {temp} Degrees Celcius',
                 linestyle=random.choice(linestyle))
 
 
@@ -863,7 +838,7 @@ def plot_drying_rate_curve(best_model_results, folder_path, file_path):
             # extract time and moisture ratio (predicted)
             time = best_model_results[thickness][temp]['time']
 
-            time2 = np.array(range(0, max(time) + 1))
+            time2 = np.array(range(min(time), max(time) + 1))
             MR2 = best_model_results[thickness][temp]['MR2'] # predicted moisture ratio
             
             drying_rate = -np.diff(MR2) / np.diff(time2)
@@ -913,7 +888,7 @@ def  plot_krischer_curve(best_model_results, folder_path):
             # extract time and moisture ratio (predicted)
             time = best_model_results[thickness][temp]['time']
 
-            time2 = np.array(range(0, max(time) + 1))
+            time2 = np.array(range(min(time), max(time) + 1))
             MR2 = best_model_results[thickness][temp]['MR2'] # predicted moisture ratio
             
             drying_rate = -np.diff(MR2) / np.diff(time2)
@@ -938,7 +913,6 @@ def  plot_krischer_curve(best_model_results, folder_path):
         plt.close()
 
     return 0
-
 
 
 def plot_handler(best_model_results, folder_path, file_path):
