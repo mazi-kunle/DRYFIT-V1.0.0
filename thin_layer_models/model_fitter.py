@@ -12,19 +12,32 @@ from sklearn.metrics import mean_squared_error, r2_score
 from thin_layer_models.report_generator import *
 from thin_layer_models.fit_funcs import *
 import sys
+import os
 
 
 # ignore unneccesary warnings
 warnings.filterwarnings('ignore')
 
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        base_path = sys._MEIPASS  # PyInstaller temporary folder
+    except AttributeError:
+        base_path = os.path.abspath('.')
+
+    return os.path.join(base_path, relative_path)
+
+
+
 def get_model_from_file(file):
     '''Read model from file
     '''
     models = {}
-    file = sys.path[0] + '/thin_layer_models/' + file
+    file_path = resource_path(f'thin_layer_models/{file}')
+    print(file_path)
 
-    with open(file) as f:
+    with open(file_path) as f:
         line = f.readline()
         while line:
             try:
@@ -73,7 +86,7 @@ def model_fitter(time, MR, best_model_list):
                 MR_model = eval(model)(time, *popt)
 
 
-            # get model parameters
+            # get model constants
             model_args = zip(get_args(eval(model)), popt[:].tolist())
 
             params = {
