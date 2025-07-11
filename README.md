@@ -71,7 +71,7 @@ DryFit can be installed like a regular Windows desktop application — **no need
 
 #### 🧾 Steps:
 
-1. Download the installer from the [Releases](https://github.com/yourusername/dryfit/releases) page  
+1. Download the installer from the [Releases](https://github.com/mazi-kunle/DRYFIT-V1.0.0/releases/tag/V1.0.0) page  
    (e.g., `DryFit_Setup.exe`).
 2. Double-click the downloaded file to run the installer.
 3. Follow the on-screen instructions to complete installation.
