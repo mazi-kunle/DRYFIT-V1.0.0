@@ -35,7 +35,7 @@
 
 - Load and analyze moisture ratio history data from Excel file
 - Calculate moisture diffusivity.
-- Calculate thermodynamic properties (Enthalpy, Entropy and Gibbs Free Energy) 
+- Calculate thermodynamic properties (Activation Energy, Enthalpy, Entropy and Gibbs Free Energy). 
 - Fit multiple thin-layer drying models using Non-linear regression (e.g., Page, Henderson and Pabis, Logarithmic).    
 - Calculate statistical parameters (R², RMSE, SSE).
 - Use the statictical parameters to determine the best model.
