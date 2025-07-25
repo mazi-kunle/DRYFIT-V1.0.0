@@ -134,18 +134,18 @@ DryFit supports the following mathematical models
  
 | S/N | Model Name                 | Equation                                             |
 |-----|----------------------------|------------------------------------------------------|
-| 1   | Modified Henderson & Pabis | MR = a\*exp(-k\*x) + b\*exp(-g\*x) + c\*exp(-h\*x)   |
-| 2   | Henderson & Pabis          | MR = a\*exp(-k\*(x^n))                               |
-| 3   | Weibull                    | MR = (a-b)\*(exp(-k\*(x^n)))                         |
-| 4   | Page                       | MR = exp(-k\*(x^n))                                  |
-| 5   | Modified Page              | MR = exp(-(k\*(x^n)))                                |  
-| 6   | Haghi & Ghanadzadeh        | MR = a\*exp(-b\*(x^c)) + (d\*(x^2)) + (e\*x) + f     |
-| 7   | Verma et al                | MR = a\*exp(-k\*t) + ((1-a)\*exp(-g\*x))             |
-| 8   | Midilli et al              | MR = a\*exp(-k\*x) + (b\*x)                          |
-| 9   | Peleg                      | MR = 1 - (x / (a+(b\*x)))                            |
-| 10  | Newton                     | MR = exp(-k\*x)                                      |
+| 1   | Modified Henderson & Pabis | MR = a\*exp(-k\*t) + b\*exp(-g\*t) + c\*exp(-h\*t)   |
+| 2   | Henderson & Pabis          | MR = a\*exp(-k\*(t^n))                               |
+| 3   | Weibull                    | MR = (a-b)\*(exp(-k\*(t^n)))                         |
+| 4   | Page                       | MR = exp(-k\*(t^n))                                  |
+| 5   | Modified Page              | MR = exp(-(k\*(t^n)))                                |  
+| 6   | Haghi & Ghanadzadeh        | MR = a\*exp(-b\*(t^c)) + (d\*(t^2)) + (e\*t) + f     |
+| 7   | Verma et al                | MR = a\*exp(-k\*t) + ((1-a)\*exp(-g\*t))             |
+| 8   | Midilli et al              | MR = a\*exp(-k\*t) + (b\*t)                          |
+| 9   | Peleg                      | MR = 1 - (t / (a+(b\*t)))                            |
+| 10  | Newton                     | MR = exp(-k\*t)                                      |
 | 11  | Logarithmic                | MR = a\*exp(-k\*t) + c                               |
-| 12  | Silva et al                | MR = exp(-a\*x - b\*sqrt(x))                         |
+| 12  | Silva et al                | MR = exp(-a\*t - b\*sqrt(t))                         |
 | 13  | Wang and Singh             | MR = 1 + a\*t + b\*t^2                               |
 | 14  | Two-term                   | MR = a\*exp(-k\*t) + b\*exp(-g\*t)                   |
 | 15  | Demir et al                | MR = a\*exp(-k\*t)^n + b                             |
