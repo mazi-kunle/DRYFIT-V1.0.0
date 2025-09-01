@@ -5,6 +5,7 @@ import datetime
 import json
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.interpolate import make_interp_spline, PchipInterpolator
 import openpyxl
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, Border, Side
@@ -440,15 +441,25 @@ def model_report_writer(data, temp):
             r_square = data[temp][thickness][models[i]]['R_Square']
             sse = data[temp][thickness][models[i]]['SSE']
             rmse = data[temp][thickness][models[i]]['RMSE']
+            mse = data[temp][thickness][models[i]]['MSE']
+            chi_square = data[temp][thickness][models[i]]['CHI-SQUARE']
+            aic = data[temp][thickness][models[i]]['AIC']
+            aicc = data[temp][thickness][models[i]]['AIC_corrected']
 
 
             _.append(r_square)
             _.append(sse)
             _.append(rmse)
+            _.append(mse)
+            _.append(chi_square)
+            _.append(aic)
+            _.append(aicc)
+
 
         result.append(_)
 
     return result
+
 
 
 def create_dynamic_table(filename, file_path, main_headers, sub_headers, data, temp, thickness_list, best_model_list):
@@ -852,7 +863,13 @@ def plot_drying_rate_curve(best_model_results, folder_path, file_path):
             }
 
 
-            plt.plot(time2, drying_rate_arr, label=f'{temp} Degrees Celcius')
+            # Generate smoother curve
+            xnew = np.linspace(min(time2), max(time2), 500)  # 300 interpolation points
+            spl = make_interp_spline(time2, drying_rate_arr, k=3)     # Cubic spline
+            y_smooth = spl(xnew)
+
+            plt.plot(xnew, y_smooth, label=f'{temp} Degrees Celcius')
+            # plt.plot(time2, drying_rate_arr, label=f'{temp} Degrees Celcius')
 
         plots_data_writer(data, file_path,
             f'Drying rate curve ({thickness}mm)',
@@ -892,10 +909,23 @@ def  plot_krischer_curve(best_model_results, folder_path):
             MR2 = best_model_results[thickness][temp]['MR2'] # predicted moisture ratio
             
             drying_rate = -np.diff(MR2) / np.diff(time2)
+
             drying_rate_arr = np.insert(drying_rate, 0, 0) # insert 0 at index 0
 
             
-            plt.plot(MR2, drying_rate_arr, label=f'{temp} Degrees Celcius')
+            # Ensure strictly increasing X for spline
+            sort_idx = np.argsort(MR2)
+            MR_sorted = MR2[sort_idx]
+            dr_sorted = drying_rate_arr[sort_idx]
+
+            # smoothen curve
+            xnew = np.linspace(MR_sorted.min(), MR_sorted.max(), 500)  # 300 interpolation points
+            spl = PchipInterpolator(MR_sorted, dr_sorted)     # interpolation spline
+            y_smooth = spl(xnew)
+
+            plt.plot(xnew, y_smooth, label=f'{temp} Degrees Celcius')
+
+            # plt.plot(MR2, drying_rate_arr, label=f'{temp} Degrees Celcius')
 
 
         plt.legend(fontsize=10, title_fontsize=12, loc="upper left")
