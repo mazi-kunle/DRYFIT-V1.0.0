@@ -149,7 +149,7 @@ DryFit supports the following mathematical models
 | 13  | Wang and Singh             | MR = 1 + a\*t + b\*t^2                               |
 | 14  | Two-term                   | MR = a\*exp(-k\*t) + b\*exp(-g\*t)                   |
 | 15  | Demir et al                | MR = a\*exp(-k\*t)^n + b                             |
-| 16  | Hill et al                 | MR = a\*exp(-k\*t^n) + b\*exp(-g\*t^n)               |
+| 16  | Hii et al                  | MR = a\*exp(-k\*t^n) + b\*exp(-g\*t^n)               |
 
 ---
 
